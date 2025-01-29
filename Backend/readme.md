@@ -99,7 +99,7 @@ Invalid Email:
   "message": "Invalid email"
 }
 ```
-Invalid Email:
+Wrong Password:
 ```json
 {
   "message": "Wrong Password"
