@@ -49,3 +49,59 @@ Example:
 Status Codes:
 200 OK: User successfully registered.
 400 Bad Request: Validation error in the input data.
+
+# User Login Endpoint
+
+## Endpoint: 
+`/users/login`
+
+### Method: 
+`POST`
+
+### Description:
+This endpoint authenticates existing users. It validates the login credentials and returns a JWT token upon successful authentication.
+
+### Request Body:
+The request body should be a JSON object with the following fields:
+- `email` (string, required, must be a valid email)
+- `password` (string, required, minimum length: 6)
+
+Example:
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+Response:
+Success (200):
+If login is successful, returns user details and authentication token.
+
+Example:
+```json
+{
+  "user": {
+    "_id": "60c72b2f9b1e8b001c8e4d5a",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+Error Cases (400):
+Invalid Email:
+```json
+{
+  "message": "Invalid email"
+}
+```
+Invalid Email:
+```json
+{
+  "message": "Wrong Password"
+}
+```
