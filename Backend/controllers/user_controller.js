@@ -1,6 +1,7 @@
 const { validationResult } = require('express-validator')
 const userModel = require('../models/user_model');
 const { createUser } = require('../services/user_services');
+const blacklistToken = require('../models/blacklistToken_model');
 
 module.exports.registerUser = async (req, res, next) => {
     const errors = validationResult(req);
@@ -42,7 +43,14 @@ module.exports.loginUser = async (req, res, next) => {
         if(isMatch){
 
             const token = user.generateAuthToken();
-            res.status(200).json({user, token});
+
+            res.cookie('token', token, {
+                maxAge: 24*60*60*1000,
+                httpOnly: true,
+                secure: true,
+            })
+
+            res.status(200).json({token, user});
         }
         else{
             res.status(400).json({message: 'Wrong Password'})
@@ -51,4 +59,22 @@ module.exports.loginUser = async (req, res, next) => {
     else{
         return res.status(400).json({message: 'Invalid email'});
     }
+}
+
+
+module.exports.getUserProfile = async (req, res, next) => {
+    res.status(200).json(req.user);
+}
+
+
+module.exports.logoutUser = async (req, res, next) => {
+    res.clearCookie('token');
+
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+
+    await blacklistToken.create({
+        token: token
+    })
+
+    res.status(200).json({message: 'Logged Out Successfully'});
 }

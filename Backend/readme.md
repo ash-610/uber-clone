@@ -105,3 +105,74 @@ Wrong Password:
   "message": "Wrong Password"
 }
 ```
+
+# User Profile Endpoint
+
+## Endpoint: 
+`/users/profile`
+
+### Method: 
+`GET`
+
+### Description:
+This endpoint retrieves the profile of the authenticated user.
+
+### Headers:
+- `Authorization` (string, required, Bearer token)
+
+### Response:
+Success (200):
+If the user is authenticated, returns the user profile details.
+
+Example:
+```json
+{
+  "_id": "60c72b2f9b1e8b001c8e4d5a",
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com"
+}
+```
+
+Error Cases (401):
+Unauthorized:
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+# User Logout Endpoint
+
+## Endpoint: 
+`/users/logout`
+
+### Method: 
+`GET`
+
+### Description:
+This endpoint logs out the authenticated user by clearing the authentication token and blacklisting it.
+
+### Headers:
+- `Authorization` (string, required, Bearer token)
+
+### Response:
+Success (200):
+If the user is successfully logged out, returns a success message.
+
+Example:
+```json
+{
+  "message": "Logged Out Successfully"
+}
+```
+
+Error Cases (401):
+Unauthorized:
+```json
+{
+  "message": "Unauthorized"
+}
+```
