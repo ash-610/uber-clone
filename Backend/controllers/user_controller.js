@@ -40,7 +40,7 @@ module.exports.loginUser = async (req, res, next) => {
 
     const user = await userModel.findOne({
         email : email
-    },).select('+password');
+    }).select('+password');
 
     if(user){
         const isMatch = await user.comparePassword(password);
@@ -49,7 +49,7 @@ module.exports.loginUser = async (req, res, next) => {
 
             const token = user.generateAuthToken();
 
-            res.cookie('token', token, {
+            res.cookie('user_token', token, {
                 maxAge: 24*60*60*1000,
                 httpOnly: true,
                 secure: true,
@@ -73,13 +73,14 @@ module.exports.getUserProfile = async (req, res, next) => {
 
 
 module.exports.logoutUser = async (req, res, next) => {
-    res.clearCookie('token');
 
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
-    await blacklistToken.create({
-        token: token
-    })
-
+    if(token){
+        await blacklistToken.create({
+            token: token
+        })
+    }
+    res.clearCookie('token');
     res.status(200).json({message: 'Logged Out Successfully'});
 }

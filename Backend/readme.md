@@ -176,7 +176,7 @@ Unauthorized:
   "message": "Unauthorized"
 }
 ```
-### Register Captain
+# Register Captain Endpoint
 Register a new captain in the system.
 
 - **URL:** `/captains/register`
@@ -250,3 +250,101 @@ Register a new captain in the system.
     })
   })
   ```
+
+  # Login Captain Endpoint
+  Authenticate and log in an existing captain.
+
+  - **URL:** `/captains/login`
+  - **Method:** `POST`
+  - **Request Body:**
+    ```json
+    {
+      "email": "string",    // Required, valid email format
+      "password": "string"  // Required, min length: 6
+    }
+    ```
+
+  - **Success Response:**
+    - **Code:** 200
+    - **Content:**
+      ```json
+      {
+        "token": "jwt_token_string",
+        "captain": {
+          "_id": "captain_id",
+          "fullname": {
+            "firstname": "string",
+            "lastname": "string"
+          },
+          "email": "string",
+          "vehicle": {
+            "color": "string",
+            "plateNumber": "string",
+            "capacity": "number",
+            "vehicleType": "string"
+          }
+        }
+      }
+      ```
+
+  - **Error Responses:**
+    - **Code:** 400 BAD REQUEST
+      - **Content:**
+        ```json
+        {
+          "error": "Captain does not exist"
+        }
+        ```
+      - OR
+        ```json
+        {
+          "error": "Invalid password"
+        }
+        ```
+
+  # Get Captain Profile Endpoint
+  Retrieve the authenticated captain's profile information.
+
+  - **URL:** `/captains/profile`
+  - **Method:** `GET`
+  - **Headers:**
+    - `Authorization`: Bearer token
+
+  - **Success Response:**
+    - **Code:** 200
+    - **Content:** Captain profile object
+
+  - **Error Response:**
+    - **Code:** 401 UNAUTHORIZED
+      - **Content:**
+        ```json
+        {
+          "message": "Unauthorized"
+        }
+        ```
+
+  # Logout Captain Endpoint
+  Log out the currently authenticated captain.
+
+  - **URL:** `/captains/logout`
+  - **Method:** `GET`
+  - **Headers:**
+    - `Authorization`: Bearer token
+
+  - **Success Response:**
+    - **Code:** 200
+    - **Content:**
+      ```json
+      {
+        "message": "Logged out successfully"
+      }
+      ```
+
+  - **Error Response:**
+    - **Code:** 401 UNAUTHORIZED
+      - **Content:**
+        ```json
+        {
+          "message": "Unauthorized"
+        }
+        ```
