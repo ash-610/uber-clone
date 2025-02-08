@@ -176,3 +176,77 @@ Unauthorized:
   "message": "Unauthorized"
 }
 ```
+### Register Captain
+Register a new captain in the system.
+
+- **URL:** `/captains/register`
+- **Method:** `POST`
+- **Request Body:**
+  ```json
+  {
+    "firstname": "string",     // Required, min length: 3
+    "lastname": "string",      // Optional, min length: 3
+    "email": "string",        // Required, valid email format
+    "password": "string",     // Required, min length: 6
+    "color": "string",        // Required, min length: 3
+    "plateNumber": "string",  // Required, min length: 3
+    "capacity": "number",     // Required, min: 1
+    "vehicleType": "string"   // Required, enum: ["car", "motorcycle", "auto"]
+  }
+  ```
+
+- **Success Response:**
+  - **Code:** 201
+  - **Content:**
+    ```json
+    {
+      "message": "Captain registered successfully"
+    }
+    ```
+
+- **Error Responses:**
+  - **Code:** 400 BAD REQUEST
+    - **Content:** 
+      ```json
+      {
+        "error": "Captain already exists"
+      }
+      ```
+    - OR
+      ```json
+      {
+        "error": "All fields Required"
+      }
+      ```
+    - OR
+      ```json
+      {
+        "errors": [
+          {
+            "msg": "Atleast 3 characters required",
+            "param": "firstname"
+          },
+          // ... other validation errors
+        ]
+      }
+      ```
+
+- **Sample Call:**
+  ```javascript
+  fetch('/captains/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      firstname: "John",
+      lastname: "Doe",
+      email: "john.doe@example.com",
+      password: "password123",
+      color: "Black",
+      plateNumber: "ABC-123",
+      capacity: 4,
+      vehicleType: "car"
+    })
+  })
+  ```
